@@ -4,7 +4,7 @@ function hide(text) {
   let amount = 3;
   if (text.length < 6) amount = 2;
   const first = text.slice(0, amount);
-  const hidden = text.slice(amount).toLowerCase().replace(/[a-z]/g, 'X');
+  const hidden = text.slice(amount).toLowerCase().replace(/[a-z0-9]/g, 'X');
   return `${first}${hidden}`;
 }
 
