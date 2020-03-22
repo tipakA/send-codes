@@ -3,7 +3,7 @@ const { Client, Collection, MessageEmbed } = require('discord.js');
 const { promisify } = require('util');
 const Redis = require('ioredis');
 require('dotenv').config();
-const client = new Client();
+const client = new Client({ messageCacheMaxSize: 10 });
 
 client.debug = true;
 client.redis = new Redis();
