@@ -28,7 +28,7 @@ async function delcode(message) {
     .setFooter('Type number of code to delete or send `cancel` to cancel deleting. To finish deleting react to the message with the \✅ emote.'); // eslint-disable-line no-useless-escape
   const embedMsg = await message.channel.send(initEmbed);
   await embedMsg.react('✅');
-  const mFilter = m => m.author.id === message.author.id && parseInt(m.content) <= message.client.codes.size;
+  const mFilter = m => m.author.id === message.author.id && (parseInt(m.content) <= message.client.codes.size || m.content.toLowerCase() === 'cancel');
   const rFilter = (reaction, user) => user.id === message.author.id && reaction.emoji.name === '✅';
   const mCollector = message.channel.createMessageCollector(mFilter);
   const rCollector = embedMsg.createReactionCollector(rFilter, { max: 1 });
