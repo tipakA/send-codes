@@ -1,5 +1,6 @@
 /* eslint-disable global-require */
 const { Client, Collection, MessageEmbed } = require('discord.js');
+const { promisify } = require('util');
 const Redis = require('ioredis');
 require('dotenv').config();
 const client = new Client();
@@ -8,7 +9,9 @@ client.debug = true;
 client.redis = new Redis();
 client.codes = new Collection();
 client.intervals = new Collection();
+client.wait = promisify(setTimeout);
 client.config = require('./config.json');
+
 
 client.updateCodes = async () => {
   try {
