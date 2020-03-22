@@ -68,7 +68,7 @@ client.on('ready', async () => {
   while (timeLeft < 0) {
     timeLeft = new Date(timeSettings[0]).getTime() - Date.now();
     if (timeLeft > 0) break;
-    timeSettings[0] = new Date(timeSettings[0].getTime() + parseInt(timeSettings[1]));
+    timeSettings[0] = new Date(timeSettings[0]).getTime() + parseInt(timeSettings[1]);
   }
   setTimeout(createInterval, timeLeft, parseInt(timeSettings[1]));
 });
