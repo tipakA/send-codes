@@ -63,8 +63,13 @@ client.on('ready', async () => {
     return console.error('Error while connecting to Redis:\n', err);
   }
 
-  const timeLeft = new Date(timeSettings[0]).getTime() - Date.now();
-  setTimeout(createInterval, timeLeft, timeSettings[1]);
+  let timeLeft = -1;
+  while (timeLeft < 0) {
+    timeLeft = new Date(timeSettings[0]).getTime() - Date.now();
+    if (timeLeft > 0) break;
+    timeSettings[0] = new Date(timeSettings[0].getTime() + parseInt(timeSettings[1]));
+  }
+  setTimeout(createInterval, timeLeft, parseInt(timeSettings[1]));
 });
 
 client.on('message', message => {
