@@ -46,7 +46,7 @@ async function addcode(message) {
   });
 
   mCollector.on('collect', msg => {
-    console.log('collected', msg.content);
+    if (message.client.debug) console.log('collected', msg.content);
     if (msg.content.toLowerCase() === 'cancel') {
       rCollector.stop('cancelled');
       return mCollector.stop('cancelled');
