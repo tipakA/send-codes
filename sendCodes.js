@@ -41,7 +41,7 @@ async function post() {
   await channel.send(codeEmbed);
 }
 
-function createInterval([ point, interval ]) {
+function createInterval(interval) {
   post();
   client.intervals.set(0, setInterval(post, interval));
 }
@@ -64,7 +64,7 @@ client.on('ready', async () => {
   }
 
   const timeLeft = new Date(timeSettings[0]).getTime() - Date.now();
-  setTimeout(createInterval, timeLeft, timeSettings);
+  setTimeout(createInterval, timeLeft, timeSettings[1]);
 });
 
 client.on('message', message => {
