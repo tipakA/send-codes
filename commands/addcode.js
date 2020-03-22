@@ -7,7 +7,7 @@ async function addcode(message) {
     .setColor('#79A707')
     .setTitle('Adding code')
     .addFields({ name: 'Current code count', value: message.client.codes.size, inline: true })
-    .setDescription('Type your code to add or send `cancel` to cancel adding. To finish adding react to the message with the \✅ emote.'); // eslint-disable-line no-useless-escape
+    .setFooter('Type your code to add or send `cancel` to cancel adding. To finish adding react to the message with the \✅ emote.'); // eslint-disable-line no-useless-escape
   const embedMsg = await message.channel.send(initEmbed);
   await embedMsg.react('✅');
   const mFilter = m => m.author.id === message.author.id;
@@ -39,7 +39,7 @@ async function addcode(message) {
     } else if (reason === 'cancelled') {
       const embed = new MessageEmbed()
         .setColor('#FF0000')
-        .setTitle('Adding codes was cancelled. None of added codes were stored')
+        .setTitle('Adding codes was cancelled. None of added codes were stored.')
         .addFields({ name: 'Current code count', value: message.client.codes.size, inline: true });
       return embedMsg.edit(embed);
     }
