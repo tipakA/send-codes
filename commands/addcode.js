@@ -10,7 +10,7 @@ async function addcode(message) {
     .setDescription('Type your code to add or send `cancel` to cancel adding. To finish adding react to the message with the \✅ emote.'); // eslint-disable-line no-useless-escape
   const embedMsg = await message.channel.send(initEmbed);
   await embedMsg.react('✅');
-  const mFilter = (_, user) => user.id === message.author.id;
+  const mFilter = m => m.author.id === message.author.id;
   const rFilter = (reaction, user) => user.id === message.author.id && reaction.emoji.name === '✅';
   const mCollector = message.channel.createMessageCollector(mFilter);
   const rCollector = embedMsg.createReactionCollector(rFilter, { max: 1 });
@@ -46,6 +46,7 @@ async function addcode(message) {
   });
 
   mCollector.on('collect', msg => {
+    console.log('collected', msg.content);
     if (msg.content.toLowerCase() === 'cancel') {
       rCollector.stop('cancelled');
       return mCollector.stop('cancelled');
