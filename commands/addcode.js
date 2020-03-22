@@ -51,7 +51,7 @@ async function addcode(message) {
       rCollector.stop('cancelled');
       return mCollector.stop('cancelled');
     }
-    codesToAdd.push(message.content);
+    codesToAdd.push(msg.content);
   });
 }
 
