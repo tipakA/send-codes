@@ -1,0 +1,24 @@
+{
+  "name": "send-codes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sendCodes.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tipakA/send-codes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tipakA/send-codes/issues"
+  },
+  "homepage": "https://github.com/tipakA/send-codes#readme",
+  "dependencies": {
+    "discord.js": "^12.0.2",
+    "dotenv": "^8.2.0"
+  }
+}
