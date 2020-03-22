@@ -1,4 +1,4 @@
-/* eslint-disable global-require */
+/* eslint-disable global-require, sort-keys */
 const { Client, Collection, MessageEmbed } = require('discord.js');
 const { promisify } = require('util');
 const Redis = require('ioredis');
@@ -11,7 +11,6 @@ client.codes = new Collection();
 client.intervals = new Collection();
 client.wait = promisify(setTimeout);
 client.config = require('./config.json');
-
 
 client.updateCodes = async () => {
   try {
@@ -31,8 +30,24 @@ function reply(message, type) {
   if (type === 'noAccess') return message.reply('you don\'t have access to this command.');
 }
 
+async function post() {
+  const code = client.codes.random();
+  const codeEmbed = new MessageEmbed()
+    .setColor('RANDOM')
+    .setTitle('Kod')
+    .addFields({ name: 'Ten tutaj o', value: code, inline: true });
+  const channel = await client.redis.get('sm:channel').then(cid => client.channels.cache.get(cid));
+  if (!channel) return console.error('There is no channel set up at the moment of posting.');
+  await channel.send(codeEmbed);
+}
+
+function createInterval([ point, interval ]) {
+  post();
+  client.intervals.set(0, setInterval(post, interval));
+}
+
 client.on('ready', async () => {
-  client.commands = await (require('./util/loadCommands.js'))(client); // eslint-disable-line require-atomic-updates
+  client.commands = await require('./util/loadCommands.js')(client); // eslint-disable-line require-atomic-updates
   console.log('Checking Redis...');
   let timeSettings;
   try {
@@ -43,12 +58,13 @@ client.on('ready', async () => {
         client.codes.set(i, codesCount[i]);
       }
     } else console.log('There are no codes to load.');
-    timeSettings = await client.redis.get('sm:timeSettings');
+    timeSettings = await client.redis.get('sm:timeSettings').then(x => x.split('_'));
   } catch (err) {
     return console.error('Error while connecting to Redis:\n', err);
   }
 
-
+  const timeLeft = new Date(timeSettings[0]).getTime() - Date.now();
+  setTimeout(createInterval, timeLeft, timeSettings);
 });
 
 client.on('message', message => {
