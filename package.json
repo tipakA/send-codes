@@ -1,24 +1,27 @@
 {
   "name": "send-codes",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple bot for sending random string every specific time period.",
   "main": "sendCodes.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "preupdate": "npm i",
+    "update": "npm i discordjs/discord.js",
+    "postupdate": "pm2 restart sendCodes"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tipakA/send-codes.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "tipakA",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/tipakA/send-codes/issues"
   },
   "homepage": "https://github.com/tipakA/send-codes#readme",
   "dependencies": {
-    "discord.js": "^12.0.2",
+    "discord.js": "github:discordjs/discord.js",
     "dotenv": "^8.2.0",
     "ioredis": "^4.16.0"
   }
