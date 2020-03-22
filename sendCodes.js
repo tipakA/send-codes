@@ -39,6 +39,7 @@ async function post() {
   const channel = await client.redis.get('sm:channel').then(cid => client.channels.cache.get(cid));
   if (!channel) return console.error('There is no channel set up at the moment of posting.');
   await channel.send(codeEmbed);
+  client.codes.sweep(c => c === code);
 }
 
 function createInterval(interval) {
