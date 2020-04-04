@@ -2,6 +2,7 @@
 const { MessageEmbed } = require('discord.js');
 
 async function addcode(message) {
+  const messagesToDelete = [];
   const codesToAdd = [];
   const initEmbed = new MessageEmbed()
     .setColor('#79A707')
@@ -21,6 +22,7 @@ async function addcode(message) {
 
   mCollector.on('end', async (_, reason) => {
     embedMsg.reactions.removeAll();
+    if (messagesToDelete.length) message.channel.bulkDelete(messagesToDelete);
     if (reason === 'addingFinished') {
       try {
         await message.client.redis.rpush('sm:codes', codesToAdd);
@@ -46,6 +48,7 @@ async function addcode(message) {
   });
 
   mCollector.on('collect', msg => {
+    messagesToDelete.push(msg.id);
     if (message.client.debug) console.log('collected', msg.content);
     if (msg.content.toLowerCase() === 'cancel') {
       rCollector.stop('cancelled');

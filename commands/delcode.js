@@ -39,6 +39,7 @@ async function delcode(message) {
 
   mCollector.on('end', async (_, reason) => {
     embedMsg.reactions.removeAll();
+    if (messagesToDelete.length) message.channel.bulkDelete(messagesToDelete);
     if (reason === 'deletingFinished') {
       const arr = [...message.client.codes.values()];
       for (const x of codesToDelete.sort((a, b) => a - b).reverse()) arr.splice(x - 1, 1);
@@ -63,6 +64,7 @@ async function delcode(message) {
   });
 
   mCollector.on('collect', msg => {
+    messagesToDelete.push(msg.id);
     if (message.client.debug) console.log('collected', msg.content);
     if (msg.content.toLowerCase() === 'cancel') {
       rCollector.stop('cancelled');
