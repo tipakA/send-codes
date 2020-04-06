@@ -26,7 +26,7 @@ async function addcode(message) {
     if (reason === 'addingFinished') {
       try {
         await message.client.redis.rpush('sm:codes', codesToAdd);
-        await message.client.updateCodes();
+        await message.client.updateLocalCodes();
         const embed = new MessageEmbed()
           .setColor('#00FF00')
           .setTitle('Codes successfully added')

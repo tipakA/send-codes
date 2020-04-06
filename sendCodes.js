@@ -12,7 +12,7 @@ client.intervals = new Collection();
 client.wait = promisify(setTimeout);
 client.config = require('./config.json');
 
-client.updateCodes = async () => {
+client.updateLocalCodes = async () => {
   try {
     const codes = await client.redis.lrange('sm:codes', 0, -1);
     client.codes.sweep(() => true);

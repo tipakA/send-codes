@@ -45,7 +45,7 @@ async function delcode(message) {
       for (const x of codesToDelete.sort((a, b) => a - b).reverse()) arr.splice(x - 1, 1);
       await message.client.redis.del('sm:codes');
       if (arr.length) await message.client.redis.rpush('sm:codes', arr);
-      await message.client.updateCodes();
+      await message.client.updateLocalCodes();
       const embed = new MessageEmbed()
         .setColor('#FFAA00')
         .setTitle('Codes successfully deleted')
