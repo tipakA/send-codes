@@ -25,6 +25,25 @@ client.updateLocalCodes = async () => {
   }
 };
 
+client.removeCode = async (code) => {
+  try {
+    const codes = await client.redis.lrange('sm:codes', 0, -1);
+    if (!codes.includes(code)) return console.error('Used code was not in the database!');
+    for (let i = 0; i !== codes.length; i++) {
+      if (code !== codes[i]) continue;
+      codes.splice(i, 1);
+      break;
+    }
+    await client.redis.del('sm:codes');
+    await client.redis.rpush('sm:codes', codes);
+    await client.updateLocalCodes();
+  } catch (err) {
+    throw new Error(`Could not update remote codes.\n${err.message}`);
+  } finally {
+    client.codes.sweep(c => c === code);
+  }
+};
+
 function reply(message, type) {
   if (!type) return console.warn('No type passed to reply function.');
   if (type === 'noAccess') return message.reply('you don\'t have access to this command.');
@@ -39,7 +58,7 @@ async function post() {
   const channel = await client.redis.get('sm:channel').then(cid => client.channels.cache.get(cid));
   if (!channel) return console.error('There is no channel set up at the moment of posting.');
   await channel.send(codeEmbed);
-  client.codes.sweep(c => c === code);
+  client.removeCode(code);
 }
 
 function createInterval(interval) {
